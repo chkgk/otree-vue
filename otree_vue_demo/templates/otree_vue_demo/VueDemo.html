@@ -1,4 +1,4 @@
-{% extends "global/VuePage.html" %}
+{% extends "global/Page.html" %}
 {% load otree static %}
 
 {% block title %}
@@ -15,10 +15,26 @@
 {% endblock %}
 
 {% block scripts %}
+    <!-- Write your regular live send functions -->
     <script type="text/javascript">
         function send_random_number() {
             let rnd = Math.floor(Math.random() * 100) + 1;
             liveSend(rnd);
         }
+    </script>
+    
+    <!-- Include these two scripts on your page to get reactive elements from live send data -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type="text/javascript">
+        var live_data_received = {live_data: {}};
+        liveSocket.onmessage = function (e) {
+            live_data_received["live_data"] = JSON.parse(e.data);
+        }
+
+        new Vue({
+            data: live_data_received,
+            el: '._otree-content',
+            delimiters: ["[[","]]"]
+        });
     </script>
 {% endblock scripts %}
