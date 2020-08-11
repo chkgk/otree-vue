@@ -1,0 +1,19 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block global_scripts  %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type="text/javascript">
+        var live_data_received = {live_data: {}};
+        liveSocket.onmessage = function (e) {
+            live_data_received["live_data"] = JSON.parse(e.data);
+        }
+
+        new Vue({
+            data: live_data_received,
+            el: '._otree-content',
+            delimiters: ["[[","]]"]
+        });
+    </script>
+{% endblock %}
